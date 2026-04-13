@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaFacebookF, FaTiktok, FaGithub, FaLinkedinIn } from "react-icons/fa";
@@ -13,10 +13,12 @@ import FAQ from "./components/FAQ";
 import Inquiry from "./components/Inquries";
 import Services from "./components/Services";
 import Expertise from "./components/Exoertise";
+import UltraLoader from "./components/UltraLoader";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const App = () => {
+  const [loading, setLoading] = useState(import.meta.env.DEV);
   const counterRef = useRef([]);
 
   const splitText = (text) =>
@@ -27,13 +29,16 @@ const App = () => {
     ));
 
   useEffect(() => {
+    if (loading) return;
+
     const ctx = gsap.context(() => {
       const blocks = gsap.utils.toArray(".animate-text");
 
       if (!blocks.length) return;
+
       blocks.forEach((block) => {
         const words = block.querySelectorAll(".word");
-        if (!blocks.length) return;
+
         gsap.fromTo(
           words,
           {
@@ -52,7 +57,7 @@ const App = () => {
               trigger: block,
               start: "top 85%",
             },
-          },
+          }
         );
       });
 
@@ -74,7 +79,6 @@ const App = () => {
         });
       }
 
-      // Counter animation
       counterRef.current.forEach((el) => {
         const target = +el.dataset.target;
 
@@ -90,13 +94,13 @@ const App = () => {
               trigger: el,
               start: "top 90%",
             },
-          },
+          }
         );
       });
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [loading]);
 
   const stats = [
     { number: 30, label: "Projects" },
@@ -105,135 +109,122 @@ const App = () => {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#f5f5f5] text-gray-900">
-      <NetworkBackground />
-      <Navbar />
+    <>
+      {/* Loader (only in dev) */}
+      {loading && (
+        <UltraLoader onFinish={() => setLoading(false)} />
+      )}
 
-      {/* HERO */}
-      <section
-        id="home"
-        className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-20 pb-28 flex flex-col md:flex-row items-center justify-between gap-16"
+      {/* Main App */}
+      <div
+        className={`relative min-h-screen overflow-hidden bg-[#f5f5f5] text-gray-900 transition-opacity duration-700 ${
+          loading ? "opacity-0" : "opacity-100"
+        }`}
       >
-        <div className="max-w-2xl text-center md:text-left">
-          <h1 className="animate-text text-4xl md:text-6xl font-bold leading-tight">
-            {splitText("Turning Ideas Into")}
-            <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-black/20">
-              {splitText("Scalable Web Applications")}
-            </span>
-          </h1>
+        <NetworkBackground />
+        <Navbar />
 
-          <p className="animate-text mt-6 text-gray-600 text-lg md:text-xl leading-relaxed">
-            {splitText(
-              "Hi, I'm Alfren Alvaran — a Full-Stack Web Developer creating modern, scalable, and user-focused digital solutions.",
-            )}
-          </p>
+        {/* HERO */}
+        <section
+          id="home"
+          className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-20 pb-28 flex flex-col md:flex-row items-center justify-between gap-16"
+        >
+          <div className="max-w-2xl text-center md:text-left">
+            <h1 className="animate-text text-4xl md:text-6xl font-bold leading-tight">
+              {splitText("Turning Ideas Into")}
+              <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                {splitText("Scalable Web Applications")}
+              </span>
+            </h1>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-            <button className="px-6 py-3 rounded-xl bg-blue-600 text-white font-medium shadow-lg hover:scale-105 hover:bg-blue-700 transition">
-              View Projects
-            </button>
-            <button className="px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition">
-              Contact Me
-            </button>
+            <p className="animate-text mt-6 text-gray-600 text-lg md:text-xl leading-relaxed">
+              {splitText(
+                "Hi, I'm Alfren Alvaran — a Full-Stack Web Developer creating modern, scalable, and user-focused digital solutions."
+              )}
+            </p>
+
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+              <button className="px-6 py-3 rounded-xl bg-blue-600 text-white font-medium shadow-lg hover:scale-105 hover:bg-blue-700 transition">
+                View Projects
+              </button>
+              <button className="px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition">
+                Contact Me
+              </button>
+            </div>
+
+            {/* Stats */}
+            <div className="flex gap-14 pt-8 justify-center lg:justify-start">
+              {stats.map((stat, i) => (
+                <div key={i} className="flex flex-col gap-[0.2rem]">
+                  <span
+                    ref={(el) => (counterRef.current[i] = el)}
+                    data-target={stat.number}
+                    className="text-[2rem] font-semibold text-[#1d1d1f]"
+                  >
+                    0
+                  </span>
+                  <span className="text-[0.8rem] text-[#86868b] font-semibold uppercase tracking-[0.05em]">
+                    {stat.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Socials */}
+            <div className="flex gap-4 mt-8 justify-center md:justify-start">
+              <a
+                href="https://web.facebook.com/alvaran.alfren/"
+                target="_blank"
+                className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110"
+              >
+                <FaFacebookF />
+              </a>
+
+              <a
+                href="https://www.tiktok.com/@alfrenalvaran"
+                target="_blank"
+                className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 hover:scale-110"
+              >
+                <FaTiktok />
+              </a>
+
+              <a
+                href="https://github.com/AlfrenAlvaran"
+                target="_blank"
+                className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-900 hover:text-white transition-all duration-300 hover:scale-110"
+              >
+                <FaGithub />
+              </a>
+
+              <a
+                href="#"
+                className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-all duration-300 hover:scale-110"
+              >
+                <FaLinkedinIn />
+              </a>
+            </div>
           </div>
 
-          {/* Counter Stats */}
-          <div className="flex gap-14 pt-8 justify-center lg:justify-start">
-            {stats.map((stat, i) => (
-              <div key={i} className="flex flex-col gap-[0.2rem]">
-                <span
-                  ref={(el) => (counterRef.current[i] = el)}
-                  data-target={stat.number}
-                  className="text-[2rem] font-semibold text-[#1d1d1f]"
-                >
-                  0
-                </span>
-                <span className="text-[0.8rem] text-[#86868b] font-semibold uppercase tracking-[0.05em]">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
+          <div className="hero-visual flex justify-center md:justify-end">
+            <div className="scale-90 md:scale-100">
+              <Lanyard
+                position={[0, 0, 20]}
+                gravity={[0, -40, 0]}
+                dpr={[1, 1.5]}
+              />
+            </div>
           </div>
+        </section>
 
-          {/* Social Icons */}
-          <div className="flex gap-4 mt-8 justify-center md:justify-start">
-            <a
-              href="https://web.facebook.com/alvaran.alfren/"
-              target="_blank"
-              className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110"
-            >
-              <FaFacebookF />
-            </a>
-
-            <a
-              href="https://www.tiktok.com/@alfrenalvaran?is_from_webapp=1&sender_device=pc"
-              target="_blank"
-              className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 hover:scale-110"
-            >
-              <FaTiktok />
-            </a>
-
-            <a
-              href="https://github.com/AlfrenAlvaran"
-              target="_blank"
-              className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-900 hover:text-white transition-all duration-300 hover:scale-110"
-            >
-              <FaGithub />
-            </a>
-
-            <a
-              href=""
-              className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-all duration-300 hover:scale-110"
-            >
-              <FaLinkedinIn />
-            </a>
-          </div>
-        </div>
-
-        <div className="hero-visual flex justify-center md:justify-end">
-          <div className="scale-90 md:scale-100">
-            <Lanyard
-              position={[0, 0, 20]}
-              gravity={[0, -40, 0]}
-              dpr={[1, 1.5]}
-            />
-          </div>
-        </div>
-      </section>
-
-       {/* Services */}
-      <Services />
-      {/* Services */}
-
-      {/* WORK / SERVICES FULL WHITE */}
-     <Expertise />
-      {/* WORK / SERVICES FULL WHITE */}
-     
-
-      {/* Projects */}
-      <FeaturedProject />
-      {/* Certificate */}
-
-      {/* achievement */}
-
-      <Certificate />
-
-      {/* achievement */}
-
-     
-
-      {/* My Story */}
-      <DeveloperStory />
-      {/* My Story */}
-
-      {/* FAQ */}
-      <FAQ />
-      {/* FAQ */}
-
-      {/* Query */}
-      <Inquiry />
-      {/* Query */}
-    </div>
+        <Services />
+        <Expertise />
+        <FeaturedProject />
+        <Certificate />
+        <DeveloperStory />
+        <FAQ />
+        <Inquiry />
+      </div>
+    </>
   );
 };
 
