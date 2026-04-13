@@ -16,7 +16,7 @@ export default function Navbar() {
           <a href="#home" className="hover:text-blue-600 transition">Home</a>
           <a href="#work" className="hover:text-blue-600 transition">Work</a>
           <a href="#services" className="hover:text-blue-600 transition">Services</a>
-          <a href="#" className="hover:text-blue-600 transition">FAQ</a>
+          <a href="#faq" className="hover:text-blue-600 transition">FAQ</a>
         </nav>
 
         {/* CTA BUTTON */}

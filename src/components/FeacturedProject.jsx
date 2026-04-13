@@ -29,7 +29,7 @@ export default function InfiniteSlider() {
   ];
 
   return (
-    <section className="py-20 bg-gray-100 overflow-hidden">
+    <section className="py-20 bg-gray-100 overflow-hidden" id="work">
       <div className="max-w-7xl mx-auto px-6">
         <p className="text-xs tracking-widest text-gray-500 mb-2">
           FEATURED PROJECTS

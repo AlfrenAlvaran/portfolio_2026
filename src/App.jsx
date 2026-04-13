@@ -7,6 +7,12 @@ import NetworkBackground from "./components/NetworkBackground";
 import Navbar from "./components/Navbar";
 import Lanyard from "./components/Lanyard";
 import FeaturedProject from "./components/FeacturedProject";
+import Certificate from "./components/Certificate";
+import DeveloperStory from "./components/DeveloperStory";
+import FAQ from "./components/FAQ";
+import Inquiry from "./components/Inquries";
+import Services from "./components/Services";
+import Expertise from "./components/Exoertise";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,9 +30,10 @@ const App = () => {
     const ctx = gsap.context(() => {
       const blocks = gsap.utils.toArray(".animate-text");
 
+      if (!blocks.length) return;
       blocks.forEach((block) => {
         const words = block.querySelectorAll(".word");
-
+        if (!blocks.length) return;
         gsap.fromTo(
           words,
           {
@@ -49,23 +56,23 @@ const App = () => {
         );
       });
 
-      // Hero visual animation
-      gsap.from(".hero-visual", {
-        opacity: 0,
-        scale: 0.8,
-        y: 40,
-        duration: 1.2,
-        ease: "power3.out",
-      });
+      if (document.querySelector(".hero-visual")) {
+        gsap.from(".hero-visual", {
+          opacity: 0,
+          scale: 0.8,
+          y: 40,
+          duration: 1.2,
+        });
+      }
 
-      // Floating dashboard card
-      gsap.to(".floating-card", {
-        y: -12,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "power1.inOut",
-      });
+      if (document.querySelector(".floating-card")) {
+        gsap.to(".floating-card", {
+          y: -12,
+          duration: 2,
+          repeat: -1,
+          yoyo: true,
+        });
+      }
 
       // Counter animation
       counterRef.current.forEach((el) => {
@@ -110,7 +117,7 @@ const App = () => {
         <div className="max-w-2xl text-center md:text-left">
           <h1 className="animate-text text-4xl md:text-6xl font-bold leading-tight">
             {splitText("Turning Ideas Into")}
-            <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-black/20">
               {splitText("Scalable Web Applications")}
             </span>
           </h1>
@@ -194,64 +201,38 @@ const App = () => {
         </div>
       </section>
 
+       {/* Services */}
+      <Services />
+      {/* Services */}
+
       {/* WORK / SERVICES FULL WHITE */}
-      <section id="work" className="relative z-10 bg-white py-24">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-16">
-          <div className="flex-1 max-w-2xl">
-            <p className="animate-text text-xs tracking-[0.25em] uppercase text-gray-500 font-semibold mb-10">
-              Expertise & Services
-            </p>
-
-            <div className="flex items-start gap-6">
-              <div className="w-1 h-20 bg-blue-600 mt-3 rounded-full"></div>
-
-              <div>
-                <h2 className="animate-text text-[2.2rem] md:text-[3.5rem] font-bold tracking-[-0.04em] leading-[1.05]">
-                  {splitText("Web Solutions,")}
-                  <span className="block font-light">
-                    {splitText("Built to Scale.")}
-                  </span>
-                </h2>
-
-                <p className="animate-text mt-8 text-gray-500 text-lg leading-relaxed max-w-xl">
-                  {splitText(
-                    "I build scalable, modern, and high-performance web applications focused on user experience, clean architecture, and business growth. From dashboards to full-stack platforms, I create systems that are reliable, responsive, and production-ready.",
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex-1 flex justify-center items-center">
-            <div className="floating-card w-full max-w-xl rounded-3xl bg-white shadow-2xl border border-gray-200 overflow-hidden">
-              {/* Browser Top Bar */}
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100 bg-gray-50">
-                <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                <div className="ml-4 text-xs text-gray-400">
-                  alfren-dev.vercel.app
-                </div>
-              </div>
-
-              {/* Fake Dashboard UI */}
-              <div className="p-6 space-y-4">
-                <div className="h-4 w-40 bg-gray-200 rounded"></div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="h-24 bg-blue-100 rounded-2xl"></div>
-                  <div className="h-24 bg-purple-100 rounded-2xl"></div>
-                  <div className="h-24 bg-pink-100 rounded-2xl"></div>
-                </div>
-                <div className="h-40 bg-gray-100 rounded-2xl"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+     <Expertise />
+      {/* WORK / SERVICES FULL WHITE */}
+     
 
       {/* Projects */}
       <FeaturedProject />
+      {/* Certificate */}
 
+      {/* achievement */}
+
+      <Certificate />
+
+      {/* achievement */}
+
+     
+
+      {/* My Story */}
+      <DeveloperStory />
+      {/* My Story */}
+
+      {/* FAQ */}
+      <FAQ />
+      {/* FAQ */}
+
+      {/* Query */}
+      <Inquiry />
+      {/* Query */}
     </div>
   );
 };
