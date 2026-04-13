@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
+import emailjs from "@emailjs/browser";
 
 const Inquiry = () => {
+  const formRef = useRef();
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -9,27 +12,54 @@ const Inquiry = () => {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Message sent 🚀");
-    setForm({ name: "", email: "", subject: "", message: "" });
+    setLoading(true);
+
+    emailjs
+      .sendForm(
+        import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY,
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          alert("Message sent 🚀");
+
+          setForm({
+            name: "",
+            email: "",
+            subject: "",
+            message: "",
+          });
+
+          setLoading(false);
+        },
+        (error) => {
+          console.log(error.text);
+          alert("Failed to send message ❌");
+          setLoading(false);
+        },
+      );
   };
 
   return (
     <section className="relative py-28 bg-white overflow-hidden">
-
-      {/* ✨ Subtle Animated Background Blobs */}
+      {/* ✨ Background Blobs */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-[-120px] left-[-120px] w-[300px] h-[300px] bg-blue-100 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-[-120px] right-[-120px] w-[300px] h-[300px] bg-purple-100 rounded-full blur-3xl animate-pulse"></div>
       </div>
 
       <div className="relative max-w-4xl mx-auto px-6">
-
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -37,9 +67,7 @@ const Inquiry = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <p className="text-xs tracking-widest text-gray-400">
-            CONTACT
-          </p>
+          <p className="text-xs tracking-widest text-gray-400">CONTACT</p>
 
           <h2 className="text-4xl md:text-5xl font-bold mt-2 text-gray-900">
             Let’s Work Together
@@ -57,11 +85,9 @@ const Inquiry = () => {
           transition={{ duration: 0.5 }}
           className="bg-white border border-gray-100 shadow-xl rounded-3xl p-8"
         >
-          <form onSubmit={handleSubmit} className="space-y-6">
-
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
             {/* Inputs Grid */}
             <div className="grid md:grid-cols-2 gap-5">
-
               <motion.input
                 whileFocus={{ scale: 1.02 }}
                 type="text"
@@ -114,9 +140,10 @@ const Inquiry = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               type="submit"
-              className="w-full py-4 rounded-xl bg-black text-white font-semibold shadow-md hover:shadow-xl transition"
+              disabled={loading}
+              className="w-full py-4 rounded-xl bg-black text-white font-semibold shadow-md hover:shadow-xl transition disabled:opacity-50"
             >
-              Send Message
+              {loading ? "Sending..." : "Send Message"}
             </motion.button>
           </form>
         </motion.div>

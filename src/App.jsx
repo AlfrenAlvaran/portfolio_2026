@@ -18,8 +18,11 @@ import UltraLoader from "./components/UltraLoader";
 gsap.registerPlugin(ScrollTrigger);
 
 const App = () => {
-  const [loading, setLoading] = useState(import.meta.env.DEV);
+  const enableLoader = import.meta.env.VITE_ENABLE_LOADER === "true";
+
+  const [loading, setLoading] = useState(enableLoader);
   const counterRef = useRef([]);
+  const appRef = useRef(null);
 
   const splitText = (text) =>
     text.split(" ").map((word, i) => (
@@ -28,78 +31,82 @@ const App = () => {
       </span>
     ));
 
+  // 🎬 CINEMATIC REVEAL AFTER LOADER
   useEffect(() => {
     if (loading) return;
 
-    const ctx = gsap.context(() => {
-      const blocks = gsap.utils.toArray(".animate-text");
+    const tl = gsap.timeline();
 
-      if (!blocks.length) return;
+    // Page reveal (blur → clear)
+    tl.fromTo(
+      appRef.current,
+      { opacity: 0, filter: "blur(12px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "power3.out" }
+    );
 
-      blocks.forEach((block) => {
-        const words = block.querySelectorAll(".word");
+    // Hero text animation
+    const blocks = gsap.utils.toArray(".animate-text");
 
-        gsap.fromTo(
-          words,
-          {
-            opacity: 0,
-            y: 40,
-            filter: "blur(8px)",
-          },
-          {
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            stagger: 0.04,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: block,
-              start: "top 85%",
-            },
-          }
-        );
-      });
+    blocks.forEach((block) => {
+      const words = block.querySelectorAll(".word");
 
-      if (document.querySelector(".hero-visual")) {
-        gsap.from(".hero-visual", {
+      gsap.fromTo(
+        words,
+        {
           opacity: 0,
-          scale: 0.8,
           y: 40,
-          duration: 1.2,
-        });
-      }
-
-      if (document.querySelector(".floating-card")) {
-        gsap.to(".floating-card", {
-          y: -12,
-          duration: 2,
-          repeat: -1,
-          yoyo: true,
-        });
-      }
-
-      counterRef.current.forEach((el) => {
-        const target = +el.dataset.target;
-
-        gsap.fromTo(
-          el,
-          { innerText: 0 },
-          {
-            innerText: target,
-            duration: 2,
-            ease: "power2.out",
-            snap: { innerText: 1 },
-            scrollTrigger: {
-              trigger: el,
-              start: "top 90%",
-            },
-          }
-        );
-      });
+          filter: "blur(8px)",
+        },
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          stagger: 0.04,
+          duration: 1,
+          ease: "power3.out",
+          delay: 0.3,
+        }
+      );
     });
 
-    return () => ctx.revert();
+    // 🎯 Lanyard cinematic entrance
+    gsap.from(".hero-visual", {
+      opacity: 0,
+      scale: 0.7,
+      y: 80,
+      duration: 1.4,
+      ease: "power4.out",
+      delay: 0.5,
+    });
+
+    // Floating card
+    gsap.to(".floating-card", {
+      y: -12,
+      duration: 2,
+      repeat: -1,
+      yoyo: true,
+      delay: 1,
+    });
+
+    // Counter animation
+    counterRef.current.forEach((el) => {
+      const target = +el.dataset.target;
+
+      gsap.fromTo(
+        el,
+        { innerText: 0 },
+        {
+          innerText: target,
+          duration: 2,
+          ease: "power2.out",
+          snap: { innerText: 1 },
+          delay: 0.6,
+        }
+      );
+    });
+
+    ScrollTrigger.refresh();
+
   }, [loading]);
 
   const stats = [
@@ -110,25 +117,19 @@ const App = () => {
 
   return (
     <>
-      {/* Loader (only in dev) */}
       {loading && (
         <UltraLoader onFinish={() => setLoading(false)} />
       )}
 
-      {/* Main App */}
       <div
-        className={`relative min-h-screen overflow-hidden bg-[#f5f5f5] text-gray-900 transition-opacity duration-700 ${
-          loading ? "opacity-0" : "opacity-100"
-        }`}
+        ref={appRef}
+        className="relative min-h-screen overflow-hidden bg-[#f5f5f5] text-gray-900"
       >
         <NetworkBackground />
         <Navbar />
 
         {/* HERO */}
-        <section
-          id="home"
-          className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-20 pb-28 flex flex-col md:flex-row items-center justify-between gap-16"
-        >
+        <section className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-20 pb-28 flex flex-col md:flex-row items-center justify-between gap-16">
           <div className="max-w-2xl text-center md:text-left">
             <h1 className="animate-text text-4xl md:text-6xl font-bold leading-tight">
               {splitText("Turning Ideas Into")}
@@ -172,34 +173,19 @@ const App = () => {
 
             {/* Socials */}
             <div className="flex gap-4 mt-8 justify-center md:justify-start">
-              <a
-                href="https://web.facebook.com/alvaran.alfren/"
-                target="_blank"
-                className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110"
-              >
+              <a href="https://web.facebook.com/alvaran.alfren/" target="_blank" className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110">
                 <FaFacebookF />
               </a>
 
-              <a
-                href="https://www.tiktok.com/@alfrenalvaran"
-                target="_blank"
-                className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 hover:scale-110"
-              >
+              <a href="https://www.tiktok.com/@alfrenalvaran" target="_blank" className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 hover:scale-110">
                 <FaTiktok />
               </a>
 
-              <a
-                href="https://github.com/AlfrenAlvaran"
-                target="_blank"
-                className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-900 hover:text-white transition-all duration-300 hover:scale-110"
-              >
+              <a href="https://github.com/AlfrenAlvaran" target="_blank" className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-900 hover:text-white transition-all duration-300 hover:scale-110">
                 <FaGithub />
               </a>
 
-              <a
-                href="#"
-                className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-all duration-300 hover:scale-110"
-              >
+              <a href="#" className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-all duration-300 hover:scale-110">
                 <FaLinkedinIn />
               </a>
             </div>
@@ -207,11 +193,7 @@ const App = () => {
 
           <div className="hero-visual flex justify-center md:justify-end">
             <div className="scale-90 md:scale-100">
-              <Lanyard
-                position={[0, 0, 20]}
-                gravity={[0, -40, 0]}
-                dpr={[1, 1.5]}
-              />
+              <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} dpr={[1, 1.5]} />
             </div>
           </div>
         </section>
