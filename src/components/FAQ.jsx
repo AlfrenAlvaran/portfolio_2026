@@ -33,41 +33,48 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-28 bg-gradient-to-b from-gray-50 to-white" id="faq">
-      <div className="max-w-4xl mx-auto px-6">
+    <section
+      className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white"
+      id="faq"
+    >
+      <div className="max-w-4xl md:max-w-5xl mx-auto px-4 sm:px-6 md:px-8">
         
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-10 md:mb-14">
           <p className="text-xs tracking-widest text-gray-500">
             FAQ
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold mt-2">
+
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mt-2 leading-tight">
             Frequently Asked Questions
           </h2>
         </div>
 
         {/* FAQ Items */}
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {faqs.map((faq, i) => {
             const isOpen = activeIndex === i;
 
             return (
               <div
                 key={i}
-                className={`rounded-2xl border transition-all duration-300 backdrop-blur-xl ${
+                className={`rounded-xl md:rounded-2xl border transition-all duration-300 backdrop-blur-xl ${
                   isOpen
-                    ? "border-blue-500 shadow-xl bg-white"
-                    : "border-gray-200 bg-white/60"
+                    ? "border-blue-500 shadow-lg md:shadow-xl bg-white"
+                    : "border-gray-200 bg-white/70"
                 }`}
               >
                 {/* Question */}
                 <button
-                  onClick={() =>
-                    setActiveIndex(isOpen ? null : i)
-                  }
-                  className="w-full flex justify-between items-center p-6 text-left"
+                  onClick={() => setActiveIndex(isOpen ? null : i)}
+                  className="
+                    w-full 
+                    flex justify-between items-center 
+                    p-4 sm:p-5 md:p-6 
+                    text-left
+                  "
                 >
-                  <span className="text-lg font-semibold">
+                  <span className="text-sm sm:text-base md:text-lg font-semibold pr-4">
                     {faq.question}
                   </span>
 
@@ -75,7 +82,7 @@ const FAQ = () => {
                   <motion.span
                     animate={{ rotate: isOpen ? 45 : 0 }}
                     transition={{ type: "spring", stiffness: 300 }}
-                    className={`text-2xl font-light ${
+                    className={`text-xl sm:text-2xl font-light flex-shrink-0 ${
                       isOpen ? "text-blue-600" : "text-gray-400"
                     }`}
                   >
@@ -90,13 +97,10 @@ const FAQ = () => {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{
-                        duration: 0.4,
-                        ease: "easeInOut",
-                      }}
-                      className="overflow-hidden px-6"
+                      transition={{ duration: 0.35 }}
+                      className="overflow-hidden px-4 sm:px-5 md:px-6"
                     >
-                      <p className="text-gray-600 pb-6 leading-relaxed">
+                      <p className="text-gray-600 text-sm sm:text-base pb-4 md:pb-6 leading-relaxed">
                         {faq.answer}
                       </p>
                     </motion.div>
