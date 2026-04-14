@@ -44,7 +44,7 @@ export default function Footer() {
             </p>
 
             <p className="text-sm text-gray-400 mt-2">
-              alfren.dev@example.com
+              alvaranalfren1@gmail.com
             </p>
 
             {/* SOCIALS */}
