@@ -43,7 +43,7 @@ const Inquiry = () => {
   };
 
   return (
-    <section className="relative py-16 md:py-24 bg-white overflow-hidden">
+    <section className="relative py-16 md:py-24 bg-white overflow-hidden" id="inquire">
       
       {/* ✨ Background Blobs */}
       <div className="absolute inset-0 pointer-events-none">

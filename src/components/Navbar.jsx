@@ -1,22 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "Work", href: "#work" },
-    { name: "Services", href: "#services" },
-    { name: "FAQ", href: "#faq" },
+    { name: "Home", href: "home" },
+    { name: "Work", href: "work" },
+    { name: "Services", href: "services" },
+    { name: "FAQ", href: "faq" },
+    { name: "Inquire", href: "inquire" },
   ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToSection = (id) => {
+    setOpen(false);
+    const el = document.getElementById(id);
+
+    if (el) {
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
 
   return (
     <>
       {/* NAVBAR */}
-      <header className="fixed top-0 left-0 w-full z-[999] backdrop-blur-md bg-white/70 border-b border-gray-100">
+      <header
+        className={`fixed top-0 left-0 w-full z-[99999] transition-all duration-300 ${
+          scrolled
+            ? "bg-white/90 backdrop-blur-md shadow-md border-b border-gray-200"
+            : "bg-transparent"
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-4 flex items-center justify-between">
-          
+
           {/* LOGO */}
           <div className="flex items-center gap-3 font-semibold text-gray-900 text-lg">
             <span className="px-2 py-1 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-bold">
@@ -28,18 +57,21 @@ export default function Navbar() {
           {/* DESKTOP NAV */}
           <nav className="hidden md:flex items-center gap-8 text-gray-600 font-medium">
             {navLinks.map((link) => (
-              <a
+              <button
                 key={link.name}
-                href={link.href}
+                onClick={() => scrollToSection(link.href)}
                 className="hover:text-blue-600 transition"
               >
                 {link.name}
-              </a>
+              </button>
             ))}
           </nav>
 
-          {/* CTA */}
-          <button className="hidden md:block px-5 py-2 rounded-full bg-blue-600 text-white font-medium shadow hover:bg-blue-700 transition">
+          {/* CTA BUTTON */}
+          <button
+            onClick={() => scrollToSection("inquire")}
+            className="hidden md:block px-5 py-2 rounded-full bg-blue-600 text-white font-medium shadow hover:bg-blue-700 transition"
+          >
             Inquire
           </button>
 
@@ -57,13 +89,13 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <>
-            {/* OVERLAY (BLUR BACKGROUND) */}
+            {/* OVERLAY */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
-              className="fixed inset-0 bg-black/40 backdrop-blur-md z-[9998]"
+              className="fixed inset-0 bg-black/40 backdrop-blur-md z-[99998]"
             />
 
             {/* MENU PANEL */}
@@ -72,7 +104,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 260, damping: 25 }}
-              className="fixed top-0 right-0 w-[75%] max-w-sm h-full bg-white z-[9999] shadow-2xl p-6 flex flex-col"
+              className="fixed top-0 right-0 w-[75%] max-w-sm h-full bg-white z-[99999] shadow-2xl p-6 flex flex-col"
             >
               {/* CLOSE BUTTON */}
               <button
@@ -82,22 +114,24 @@ export default function Navbar() {
                 ✕
               </button>
 
-              {/* NAV LINKS */}
+              {/* LINKS */}
               <div className="flex flex-col gap-6 text-lg font-medium text-gray-700">
                 {navLinks.map((link) => (
-                  <a
+                  <button
                     key={link.name}
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="hover:text-blue-600 transition"
+                    onClick={() => scrollToSection(link.href)}
+                    className="text-left hover:text-blue-600 transition"
                   >
                     {link.name}
-                  </a>
+                  </button>
                 ))}
               </div>
 
               {/* CTA */}
-              <button className="mt-auto w-full py-3 rounded-xl bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition">
+              <button
+                onClick={() => scrollToSection("inquire")}
+                className="mt-auto w-full py-3 rounded-xl bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition"
+              >
                 Inquire
               </button>
             </motion.div>
