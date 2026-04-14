@@ -49,9 +49,9 @@ export default function Navbar() {
           {/* LOGO */}
           <div className="flex items-center gap-3 font-semibold text-gray-900 text-lg">
             <span className="px-2 py-1 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-bold">
-              PA
+              A. A
             </span>
-            Alfren
+            Alfren Alvaran
           </div>
 
           {/* DESKTOP NAV */}
