@@ -1,9 +1,11 @@
 import React from "react";
 import { FaFacebookF, FaTiktok, FaGithub, FaLinkedinIn } from "react-icons/fa";
+import NetworkBackground from "./NetworkBackground";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0f0f0f] text-gray-300 pt-16 pb-8">
+    <footer className=" bg-[#0f0f0f] text-gray-300 pt-16 pb-8">
+      {/* <NetworkBackground /> */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
 
         {/* TOP SECTION */}
@@ -15,7 +17,7 @@ export default function Footer() {
               <span className="px-2 py-1 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-bold">
                 A. A
               </span>
-              Alfren
+              Alfren Alvaran
             </div>
 
             <p className="text-gray-400 mt-4 text-sm leading-relaxed max-w-sm">
@@ -40,7 +42,7 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">Contact</h3>
 
             <p className="text-sm text-gray-400">
-              Quezon City, Philippines
+              Caloocan City, Philippines
             </p>
 
             <p className="text-sm text-gray-400 mt-2">
