@@ -132,7 +132,7 @@ const App = () => {
           <div className="max-w-2xl text-center md:text-left">
             <h1 className="animate-text text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
               {splitText("Turning Ideas Into")}
-              <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="block text-blue-600">
                 {splitText("Scalable Web Applications")}
               </span>
             </h1>
@@ -145,10 +145,16 @@ const App = () => {
 
             {/* BUTTONS */}
             <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start">
-              <a href="#work" className="w-full sm:w-auto px-6 py-3 rounded-xl bg-blue-600 text-white font-medium shadow-lg hover:scale-105 hover:bg-blue-700 transition">
+              <a
+                href="#work"
+                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-blue-600 text-white font-medium shadow-lg hover:scale-105 hover:bg-blue-700 transition"
+              >
                 View Projects
               </a>
-              <a href="#inquire" className="w-full sm:w-auto px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition">
+              <a
+                href="#inquire"
+                className="w-full sm:w-auto px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition"
+              >
                 Contact Me
               </a>
             </div>
