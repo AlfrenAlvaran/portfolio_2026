@@ -45,13 +45,21 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-4 flex items-center justify-between">
-
           {/* LOGO */}
-          <div className="flex items-center gap-3 font-semibold text-gray-900 text-lg">
-            <span className="px-2 py-1 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-bold">
-              A. A
-            </span>
-            Alfren Alvaran
+          <div className="flex items-center gap-3">
+            <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 text-white shadow-lg ring-2 ring-blue-100">
+              <span className="text-sm font-extrabold tracking-wider">A.A</span>
+              <div className="absolute inset-0 rounded-2xl bg-white/10"></div>
+            </div>
+
+            <div className="flex flex-col leading-tight">
+              <span className="text-lg font-bold text-gray-900 tracking-tight">
+                Alfren Alvaran
+              </span>
+              <span className="text-sm font-medium text-gray-500">
+                Web Developer
+              </span>
+            </div>
           </div>
 
           {/* DESKTOP NAV */}
