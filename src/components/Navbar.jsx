@@ -47,11 +47,17 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-4 flex items-center justify-between">
           {/* LOGO */}
           <div className="flex items-center gap-3">
-            <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 text-white shadow-lg ring-2 ring-blue-100">
-              <span className="text-sm font-extrabold tracking-wider">A.A</span>
-              <div className="absolute inset-0 rounded-2xl bg-white/10"></div>
-            </div>
+            <div className="relative group">
+              <div className="h-12 w-12 rounded-2xl overflow-hidden bg-white shadow-lg ring-2 ring-cyan-200/60 border border-white/40 backdrop-blur-sm transition-all duration-300 group-hover:scale-105 group-hover:shadow-cyan-300/40">
+                <img
+                  src="/me2.png"
+                  alt="Alfren Alvaran Logo"
+                  className="h-full w-full object-cover"
+                />
+              </div>
 
+              <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-cyan-400/30 via-blue-500/20 to-teal-400/30 blur-md -z-10 group-hover:opacity-100 opacity-70 transition-all duration-300"></div>
+            </div>
             <div className="flex flex-col leading-tight">
               <span className="text-lg font-bold text-gray-900 tracking-tight">
                 Alfren Alvaran
