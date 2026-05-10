@@ -17,7 +17,14 @@ import UltraLoader from "./components/UltraLoader";
 import Footer from "./components/Footer";
 
 gsap.registerPlugin(ScrollTrigger);
+useEffect(() => {
+  const url = new URL(window.location.href);
 
+  if (url.searchParams.has("fbclid")) {
+    url.searchParams.delete("fbclid");
+    window.history.replaceState({}, document.title, url.pathname);
+  }
+}, []);
 const App = () => {
   const enableLoader = import.meta.env.VITE_ENABLE_LOADER === "true";
 
